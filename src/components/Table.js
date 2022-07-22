@@ -1,47 +1,61 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import planetsContext from '../Context/PlanetContext';
 
 function Table() {
   const context = useContext(planetsContext);
   const { results } = context.data;
+  const [search, setSearch] = useState('');
   console.log(results);
   return (
-    <table>
-      <tr>
-        <th>name</th>
-        <th>Roation period</th>
-        <th>Orbital Period</th>
-        <th>Diameter</th>
-        <th>Climate</th>
-        <th>Gravity</th>
-        <th>Terrain</th>
-        <th>Surface Water</th>
-        <th>Population</th>
-        <th>Films</th>
-        <th>Created</th>
-        <th>Edited</th>
-        <th>URL</th>
-      </tr>
-
-      {results && results.map((e, index) => (
-        <tr key={ index }>
-          <td>{ e.name }</td>
-          <td>{ e.rotation_period }</td>
-          <td>{ e.orbital_period }</td>
-          <td>{ e.diameter }</td>
-          <td>{ e.climate }</td>
-          <td>{ e.gravity }</td>
-          <td>{ e.terrain }</td>
-          <td>{ e.surface_water }</td>
-          <td>{ e.population }</td>
-          <td>{ e.created }</td>
-          <td>{ e.edited }</td>
-          <td>{ e.films.map((item) => item) }</td>
-          <td>{ e.url }</td>
+    <div>
+      <div className="header-conteiner">
+        <h1 className="title">Projeto Star Wars - CHAPETTA</h1>
+        <input
+          data-testid="name-filter"
+          className="input-filter-name"
+          value={ search }
+          onChange={ (e) => setSearch(e.target.value) }
+        />
+      </div>
+      <table>
+        <tr>
+          <th>name</th>
+          <th>Roation period</th>
+          <th>Orbital Period</th>
+          <th>Diameter</th>
+          <th>Climate</th>
+          <th>Gravity</th>
+          <th>Terrain</th>
+          <th>Surface Water</th>
+          <th>Population</th>
+          <th>Films</th>
+          <th>Created</th>
+          <th>Edited</th>
+          <th>URL</th>
         </tr>
-      ))}
 
-    </table>
+        {results && results
+          .filter((item) => item.name.includes(search))
+          .map((e, index) => (
+            <tr key={ index }>
+              <td>{ e.name }</td>
+              <td>{ e.rotation_period }</td>
+              <td>{ e.orbital_period }</td>
+              <td>{ e.diameter }</td>
+              <td>{ e.climate }</td>
+              <td>{ e.gravity }</td>
+              <td>{ e.terrain }</td>
+              <td>{ e.surface_water }</td>
+              <td>{ e.population }</td>
+              <td>{ e.created }</td>
+              <td>{ e.edited }</td>
+              <td>{ e.films.map((item) => item) }</td>
+              <td>{ e.url }</td>
+            </tr>
+          ))}
+
+      </table>
+    </div>
 
   );
 }
