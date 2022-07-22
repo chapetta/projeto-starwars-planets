@@ -1,16 +1,16 @@
 * {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .header-conteiner {
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 20px;
-padding-bottom: 100px;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  padding-bottom: 100px;
 
 }
 
@@ -19,19 +19,20 @@ padding-bottom: 100px;
 }
 
 table {
-  border: 1px solid rgb(73, 73, 73);
-  border-collapse: collapse; 
-  font-size: 10px;
   background-color: rgb(31, 31, 31);
+  border: 1px solid rgb(73, 73, 73);
+  border-collapse: collapse;
   color: white;
+  font-size: 10px;
 }
+
 th {
-  border: 2px solid rgb(73, 73, 73);
   background-color: black;
+  border: 2px solid rgb(73, 73, 73);
   color: white;
 }
 
- td {
-  padding: 10px;
+td {
   border: 1px solid rgb(73, 73, 73);
+  padding: 10px;
 }
