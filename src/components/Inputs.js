@@ -2,20 +2,15 @@ import React, { useContext, useState } from 'react';
 import planetsContext from '../Context/PlanetContext';
 
 function Inputs() {
-  const { addFilter } = useContext(planetsContext);
+  const { addFilter, column } = useContext(planetsContext);
 
-  const coluna = [
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water'];
   const operador = ['maior que', 'menor que', 'igual a'];
   const [option, setOption] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
+  console.log(option);
   const handleOptions = ({ target }) => {
     const { name, value } = target;
     setOption({
@@ -23,6 +18,10 @@ function Inputs() {
       [name]: value,
     });
   };
+
+  // const removeFilter = () => {
+
+  // };
 
   return (
     <form>
@@ -33,7 +32,7 @@ function Inputs() {
         value={ option.column }
         onChange={ handleOptions }
       >
-        {coluna.map((e, index) => (
+        {column.map((e, index) => (
           <option key={ index }>{e}</option>
         ))}
       </select>

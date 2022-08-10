@@ -5,6 +5,12 @@ import planetsContext from './PlanetContext';
 function PlanetsProvider({ children }) {
   const [planetsInfo, setPlanetsInfo] = useState([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
+  const [column, setColumn] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water']);
   useEffect(() => {
     async function fetchData() {
       const fetchAPI = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -49,6 +55,10 @@ function PlanetsProvider({ children }) {
   const addFilter = (obj) => {
     setFilterByNumericValues([...filterByNumericValues, obj]);
     handleFilter(planetsInfo, [...filterByNumericValues, obj]);
+    console.log(obj);
+    const results = column.filter((item) => item !== obj.column);
+    setColumn(results);
+    console.log(results);
   };
 
   return (
@@ -56,6 +66,8 @@ function PlanetsProvider({ children }) {
       value={ {
         data: planetsInfo,
         addFilter,
+        column,
+        setColumn,
       } }
     >
       {children}
