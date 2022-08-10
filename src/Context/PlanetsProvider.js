@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import planetsContext from './PlanetContext';
 
+const columnArray = ['population',
+  'orbital_period',
+  'diameter',
+  'rotation_period',
+  'surface_water'];
+
 function PlanetsProvider({ children }) {
   const [planetsInfo, setPlanetsInfo] = useState([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
-  const [column, setColumn] = useState([
-    'population',
-    'orbital_period',
-    'diameter',
-    'rotation_period',
-    'surface_water']);
+  const [column, setColumn] = useState([...columnArray]);
+  const [columnFilter, setColumnFilter] = useState(column[0]);
+
   useEffect(() => {
     async function fetchData() {
       const fetchAPI = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
@@ -24,15 +27,15 @@ function PlanetsProvider({ children }) {
     let planets = [...p];
     if (filter !== undefined) {
       filter.map((current) => {
-        console.log(current);
+        // console.log(current);
         if (current.comparison === 'maior que') {
           planets = planets
             .filter((planet) => Number(planet[current.column]) > Number(current.value));
           setPlanetsInfo(planets);
-          console.log(planets);
+          // console.log(planets);
         }
         if (current.comparison === 'menor que') {
-          console.log('menor que', planets);
+          // console.log('menor que', planets);
           planets = planets
             .filter((planet) => Number(planet[current.column]) < Number(current.value));
           setPlanetsInfo(planets);
@@ -41,7 +44,7 @@ function PlanetsProvider({ children }) {
           planets = planets
             .filter((planet) => Number(planet[current.column]) === Number(current.value));
           setPlanetsInfo(planets);
-          console.log('igual a', planets);
+          // console.log('igual a', planets);
         }
         return planets;
       });
@@ -58,8 +61,13 @@ function PlanetsProvider({ children }) {
     console.log(obj);
     const results = column.filter((item) => item !== obj.column);
     setColumn(results);
-    console.log(results);
+    // console.log(results);
   };
+
+  useEffect(() => {
+    setColumnFilter(column[0]);
+    console.log(column[0]);
+  }, [column]);
 
   return (
     <planetsContext.Provider
@@ -68,6 +76,9 @@ function PlanetsProvider({ children }) {
         addFilter,
         column,
         setColumn,
+        filterByNumericValues,
+        setFilterByNumericValues,
+        columnFilter,
       } }
     >
       {children}

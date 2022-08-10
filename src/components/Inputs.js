@@ -2,7 +2,10 @@ import React, { useContext, useState } from 'react';
 import planetsContext from '../Context/PlanetContext';
 
 function Inputs() {
-  const { addFilter, column } = useContext(planetsContext);
+  const { addFilter, column,
+    filterByNumericValues, setFilterByNumericValues,
+    columnFilter } = useContext(planetsContext);
+  // console.log(filterByNumericValues);
 
   const operador = ['maior que', 'menor que', 'igual a'];
   const [option, setOption] = useState({
@@ -10,7 +13,7 @@ function Inputs() {
     comparison: 'maior que',
     value: 0,
   });
-  console.log(option);
+  // console.log(option);
   const handleOptions = ({ target }) => {
     const { name, value } = target;
     setOption({
@@ -29,7 +32,7 @@ function Inputs() {
       <select
         name="column"
         data-testid="column-filter"
-        value={ option.column }
+        value={ columnFilter }
         onChange={ handleOptions }
       >
         {column.map((e, index) => (
@@ -62,6 +65,29 @@ function Inputs() {
         FILTRAR
 
       </button>
+      <button
+        type="button"
+        data-testid="button-remove-filters"
+        onClick={ () => setFilterByNumericValues([]) }
+      >
+        Remover Filtros
+
+      </button>
+      <div>
+        <ul>
+          {filterByNumericValues.map((item, index) => (
+            <div key={ index } data-testid="filter">
+              <li>{`${item.column} ${item.comparison} ${item.value}`}</li>
+              <button
+                type="button"
+              >
+                exlcuir
+
+              </button>
+            </div>
+          ))}
+        </ul>
+      </div>
     </form>
   );
 }
