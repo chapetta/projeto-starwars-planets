@@ -24,7 +24,6 @@ function Inputs() {
     });
   };
 
-  console.log(setOption);
   return (
     <form>
       Coluna:
