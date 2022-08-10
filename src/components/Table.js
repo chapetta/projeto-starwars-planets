@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import planetsContext from '../Context/PlanetContext';
+// import PlanetsProvider from '../Context/PlanetsProvider';
 import Header from './Header';
 import Inputs from './Inputs';
 
 function Table() {
   const { data } = useContext(planetsContext);
   const [search, setSearch] = useState('');
-
   return (
     <div>
       <Header search={ search } setSearch={ setSearch } />

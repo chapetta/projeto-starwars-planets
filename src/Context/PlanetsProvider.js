@@ -14,30 +14,41 @@ function PlanetsProvider({ children }) {
     fetchData();
   }, []);
 
-  const handleFilter = (filter) => {
-    let planets = [...planetsInfo];
-    filter.forEach((current) => {
-      console.log(planets);
-      if (current.comparison === 'maior que') {
-        planets = planets
-          .filter((planet) => Number(planet[current.column]) > Number(current.value));
-      }
-      if (current.comparison === 'menor que') {
-        planets = planets
-          .filter((planet) => Number(planet[current.column]) < Number(current.value));
-      } else {
-        planets = planets
-          .filter((planet) => Number(planet[current.column]) === Number(current.value));
-      }
-    });
-    console.log(planets);
-    console.log(filter);
+  const handleFilter = (p, filter) => {
+    let planets = [...p];
+    if (filter !== undefined) {
+      filter.map((current) => {
+        console.log(current);
+        if (current.comparison === 'maior que') {
+          planets = planets
+            .filter((planet) => Number(planet[current.column]) > Number(current.value));
+          setPlanetsInfo(planets);
+          console.log(planets);
+        }
+        if (current.comparison === 'menor que') {
+          console.log('menor que', planets);
+          planets = planets
+            .filter((planet) => Number(planet[current.column]) < Number(current.value));
+          setPlanetsInfo(planets);
+        }
+        if (current.comparison === 'igual a') {
+          planets = planets
+            .filter((planet) => Number(planet[current.column]) === Number(current.value));
+          setPlanetsInfo(planets);
+          console.log('igual a', planets);
+        }
+        return planets;
+      });
+    }
+    // console.log(planets);
+    // setPlanetsInfo(planets);
+    // console.log(filtered);
   };
   // const handleFilter = (filter) => (!filter ? planetsInfo : );
 
   const addFilter = (obj) => {
     setFilterByNumericValues([...filterByNumericValues, obj]);
-    handleFilter([...filterByNumericValues, obj]);
+    handleFilter(planetsInfo, [...filterByNumericValues, obj]);
   };
 
   return (
@@ -45,7 +56,6 @@ function PlanetsProvider({ children }) {
       value={ {
         data: planetsInfo,
         addFilter,
-
       } }
     >
       {children}
