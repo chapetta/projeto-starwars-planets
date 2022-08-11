@@ -18,13 +18,11 @@ function PlanetsProvider({ children }) {
     async function fetchData() {
       const fetchAPI = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
       const data = await fetchAPI.json();
-      // console.log(data);
       const { results } = data;
       setPlanetsInfo(results.sort((a, b) => a.name.localeCompare(b.name)));
     }
     fetchData();
   }, []);
-
   const handleFilter = (p, filter) => {
     let planets = [...p];
     // console.log(filter);

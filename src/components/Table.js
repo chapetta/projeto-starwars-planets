@@ -9,7 +9,7 @@ function Table() {
   const [search, setSearch] = useState('');
   const filterData = handleFilter(data, filterByNumericValues);
   // console.log(data);
-  const renderData = filterData === undefined ? data : filterData;
+  // const renderData = filterData === undefined ? data : filterData;
   // console.log(handleFilter(data, filterByNumericValues));
   return (
     <div>
@@ -35,7 +35,7 @@ function Table() {
         </thead>
         <tbody>
 
-          {data && renderData
+          {data && filterData
             .filter((item) => item.name.includes(search))
             .map((e, index) => (
               <tr key={ index }>
