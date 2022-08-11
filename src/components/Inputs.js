@@ -2,9 +2,10 @@ import React, { useContext, useState } from 'react';
 import planetsContext from '../Context/PlanetContext';
 
 function Inputs() {
-  const { addFilter, column, removeFilter, order, columnArray,
-    filterByNumericValues, setFilterByNumericValues,
-    columnFilter } = useContext(planetsContext);
+  const { removeFilter, order, columnArray, setColumnFilter,
+    filterByNumericValues, setFilterByNumericValues, column,
+    handleFilter, data, setColumn,
+  } = useContext(planetsContext);
   // console.log(filterByNumericValues);
   const operador = ['maior que', 'menor que', 'igual a'];
   const [option, setOption] = useState({
@@ -12,17 +13,37 @@ function Inputs() {
     comparison: 'maior que',
     value: 0,
   });
+
+  const addFilter = (obj) => {
+    setFilterByNumericValues([...filterByNumericValues, obj]);
+    handleFilter(data, [...filterByNumericValues, obj]);
+    console.log(obj);
+    const clone = [...column];
+    const results = clone.filter((item) => item !== obj.column);
+    // clone.splice(index, 1);
+    setColumn(results);
+    setColumnFilter(results[0]);
+    setOption({ ...option, column: results[0] });
+    console.log(results);
+  };
+
   const [sortedColum, setSortedColum] = useState('population');
   const [orderSort, setOrderSort] = useState('ASC');
-
+  console.log(option);
   // console.log(option);
   const handleOptions = ({ target }) => {
+    // console.log(target);
     const { name, value } = target;
     setOption({
       ...option,
       [name]: value,
     });
   };
+  // const handleColumn = ({ target }) => {
+  //   console.log(target);
+  //   handleOptions(target);
+  //   setColumnFilter(target.value);
+  // };
 
   return (
     <form>
@@ -30,8 +51,8 @@ function Inputs() {
       <select
         name="column"
         data-testid="column-filter"
-        value={ columnFilter }
-        onChange={ handleOptions }
+        value={ option.column }
+        onChange={ (event) => handleOptions(event) }
       >
         {column.map((e, index) => (
           <option key={ index }>{e}</option>

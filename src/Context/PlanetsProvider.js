@@ -12,49 +12,29 @@ function PlanetsProvider({ children }) {
   const [planetsInfo, setPlanetsInfo] = useState([]);
   const [filterByNumericValues, setFilterByNumericValues] = useState([]);
   const [column, setColumn] = useState([...columnArray]);
-  const [columnFilter, setColumnFilter] = useState(column[0]);
+  const [columnFilter, setColumnFilter] = useState(columnArray[0]);
 
   useEffect(() => {
     async function fetchData() {
       const fetchAPI = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
       const data = await fetchAPI.json();
-      console.log(data);
+      // console.log(data);
       const { results } = data;
       setPlanetsInfo(results.sort((a, b) => a.name.localeCompare(b.name)));
     }
     fetchData();
   }, []);
 
-  // useEffect(() => {
-  //   const newFilter = filterByNumericValues
-  //   .reduce((acc, filter) => acc
-  //     .filter((planet) => {
-  //       switch (filter.comparison) {
-  //       case 'maior que':
-  //         return Number(planet[filter.column]) > Number(filter.value);
-  //       case 'menor que':
-  //         return Number(planet[filter.column]) < Number(filter.value);
-  //       case 'igual a':
-  //         return Number(planet[filter.column]) === Number(filter.value);
-  //       default:
-  //         return true;
-  //       }
-  //     }), planetsFilter);
-  // }, [filterByNumericValues]);
-
   const handleFilter = (p, filter) => {
     let planets = [...p];
     if (filter !== undefined) {
       filter.map((current) => {
-        // console.log(current);
         if (current.comparison === 'maior que') {
           planets = planets
             .filter((planet) => Number(planet[current.column]) > Number(current.value));
           setPlanetsInfo(planets);
-          // console.log(planets);
         }
         if (current.comparison === 'menor que') {
-          // console.log('menor que', planets);
           planets = planets
             .filter((planet) => Number(planet[current.column]) < Number(current.value));
           setPlanetsInfo(planets);
@@ -63,7 +43,6 @@ function PlanetsProvider({ children }) {
           planets = planets
             .filter((planet) => Number(planet[current.column]) === Number(current.value));
           setPlanetsInfo(planets);
-          // console.log('igual a', planets);
         }
         return planets;
       });
@@ -74,25 +53,29 @@ function PlanetsProvider({ children }) {
   };
   // const handleFilter = (filter) => (!filter ? planetsInfo : );
 
-  const addFilter = (obj) => {
-    setFilterByNumericValues([...filterByNumericValues, obj]);
-    handleFilter(planetsInfo, [...filterByNumericValues, obj]);
-    // console.log(obj);
-    const results = column.filter((item) => item !== obj.column);
-    setColumn(results);
-    // console.log(results);
-  };
+  // const addFilter = (obj) => {
+  //   setFilterByNumericValues([...filterByNumericValues, obj]);
+  //   handleFilter(planetsInfo, [...filterByNumericValues, obj]);
+  //   console.log(obj);
+  //   const clone = [...column];
+  //   const results = clone.filter((item) => item !== obj.column);
+  //   // clone.splice(index, 1);
+  //   setColumn(results);
+  //   setColumnFilter(results[0]);
+  //   console.log(results);
+  // };
 
   const removeFilter = (item) => {
     const result = filterByNumericValues.filter((e) => e.column !== item);
     setFilterByNumericValues(result);
   };
 
-  useEffect(() => {
-    const clone = [...column];
-    console.log(column);
-    setColumnFilter(clone[0]);
-  }, [column]);
+  // useEffect(() => {
+  //   const clone = [...column];
+  //   // console.log(column[0]);
+  //   setColumnFilter(clone[0]);
+  //   // console.log(column[0]);
+  // }, [column]);
 
   const order = (sortedColumn, orders) => {
     const num = -1;
@@ -115,15 +98,16 @@ function PlanetsProvider({ children }) {
     <planetsContext.Provider
       value={ {
         data: planetsInfo,
-        addFilter,
         column,
-        setColumn,
+        setColumnFilter,
         filterByNumericValues,
         setFilterByNumericValues,
         columnFilter,
         removeFilter,
         order,
         columnArray,
+        handleFilter,
+        setColumn,
       } }
     >
       {children}
