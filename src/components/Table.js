@@ -5,8 +5,12 @@ import Header from './Header';
 import Inputs from './Inputs';
 
 function Table() {
-  const { data } = useContext(planetsContext);
+  const { data, handleFilter, filterByNumericValues } = useContext(planetsContext);
   const [search, setSearch] = useState('');
+  const filterData = handleFilter(data, filterByNumericValues);
+  // console.log(data);
+  const renderData = filterData === undefined ? data : filterData;
+  // console.log(handleFilter(data, filterByNumericValues));
   return (
     <div>
       <Header search={ search } setSearch={ setSearch } />
@@ -31,7 +35,7 @@ function Table() {
         </thead>
         <tbody>
 
-          {data && data
+          {data && renderData
             .filter((item) => item.name.includes(search))
             .map((e, index) => (
               <tr key={ index }>

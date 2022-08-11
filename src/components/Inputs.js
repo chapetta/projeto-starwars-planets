@@ -17,19 +17,19 @@ function Inputs() {
   const addFilter = (obj) => {
     setFilterByNumericValues([...filterByNumericValues, obj]);
     handleFilter(data, [...filterByNumericValues, obj]);
-    console.log(obj);
+    // console.log(obj);
     const clone = [...column];
     const results = clone.filter((item) => item !== obj.column);
     // clone.splice(index, 1);
     setColumn(results);
     setColumnFilter(results[0]);
     setOption({ ...option, column: results[0] });
-    console.log(results);
+    // console.log(results);
   };
 
   const [sortedColum, setSortedColum] = useState('population');
   const [orderSort, setOrderSort] = useState('ASC');
-  console.log(option);
+  // console.log(option);
   // console.log(option);
   const handleOptions = ({ target }) => {
     // console.log(target);
@@ -101,7 +101,7 @@ function Inputs() {
                 type="button"
                 onClick={ () => removeFilter(item.column) }
               >
-                exlcuir
+                excluir
 
               </button>
             </div>

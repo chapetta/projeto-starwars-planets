@@ -27,25 +27,28 @@ function PlanetsProvider({ children }) {
 
   const handleFilter = (p, filter) => {
     let planets = [...p];
+    // console.log(filter);
     if (filter !== undefined) {
       filter.map((current) => {
         if (current.comparison === 'maior que') {
           planets = planets
             .filter((planet) => Number(planet[current.column]) > Number(current.value));
-          setPlanetsInfo(planets);
+          // setPlanetsInfo(planets);
         }
         if (current.comparison === 'menor que') {
           planets = planets
             .filter((planet) => Number(planet[current.column]) < Number(current.value));
-          setPlanetsInfo(planets);
+          // setPlanetsInfo(planets);
         }
         if (current.comparison === 'igual a') {
           planets = planets
             .filter((planet) => Number(planet[current.column]) === Number(current.value));
-          setPlanetsInfo(planets);
+          // setPlanetsInfo(planets);
         }
+        // console.log(planets);
         return planets;
       });
+      return planets;
     }
     // console.log(planets);
     // setPlanetsInfo(planets);
