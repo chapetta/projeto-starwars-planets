@@ -2,17 +2,19 @@ import React, { useContext, useState } from 'react';
 import planetsContext from '../Context/PlanetContext';
 
 function Inputs() {
-  const { addFilter, column,
+  const { addFilter, column, removeFilter, order, columnArray,
     filterByNumericValues, setFilterByNumericValues,
     columnFilter } = useContext(planetsContext);
   // console.log(filterByNumericValues);
-
   const operador = ['maior que', 'menor que', 'igual a'];
   const [option, setOption] = useState({
     column: 'population',
     comparison: 'maior que',
     value: 0,
   });
+  const [sortedColum, setSortedColum] = useState('population');
+  const [orderSort, setOrderSort] = useState('ASC');
+
   // console.log(option);
   const handleOptions = ({ target }) => {
     const { name, value } = target;
@@ -21,10 +23,6 @@ function Inputs() {
       [name]: value,
     });
   };
-
-  // const removeFilter = () => {
-
-  // };
 
   return (
     <form>
@@ -80,6 +78,7 @@ function Inputs() {
               <li>{`${item.column} ${item.comparison} ${item.value}`}</li>
               <button
                 type="button"
+                onClick={ () => removeFilter(item.column) }
               >
                 exlcuir
 
@@ -88,6 +87,46 @@ function Inputs() {
           ))}
         </ul>
       </div>
+      <select
+        value={ sortedColum }
+        onChange={ ({ target }) => setSortedColum(target.value) }
+        data-testid="column-sort"
+      >
+        {
+          columnArray.map((element) => (
+            <option key={ element } value={ element }>
+              { element }
+            </option>
+          ))
+        }
+      </select>
+      <label htmlFor="ascendente">
+        Ascendente
+        <input
+          type="radio"
+          name="radio"
+          value="ASC"
+          onChange={ () => setOrderSort('ASC') }
+          data-testid="column-sort-input-asc"
+        />
+      </label>
+      <label htmlFor="descendente">
+        Descendente
+        <input
+          type="radio"
+          name="radio"
+          value="DESC"
+          onChange={ () => setOrderSort('DESC') }
+          data-testid="column-sort-input-desc"
+        />
+      </label>
+      <button
+        type="button"
+        onClick={ () => order(sortedColum, orderSort) }
+        data-testid="column-sort-button"
+      >
+        Ordenar
+      </button>
     </form>
   );
 }

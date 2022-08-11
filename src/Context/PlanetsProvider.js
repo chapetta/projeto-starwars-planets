@@ -18,10 +18,29 @@ function PlanetsProvider({ children }) {
     async function fetchData() {
       const fetchAPI = await fetch('https://swapi-trybe.herokuapp.com/api/planets/');
       const data = await fetchAPI.json();
-      setPlanetsInfo(data.results);
+      console.log(data);
+      const { results } = data;
+      setPlanetsInfo(results.sort((a, b) => a.name.localeCompare(b.name)));
     }
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   const newFilter = filterByNumericValues
+  //   .reduce((acc, filter) => acc
+  //     .filter((planet) => {
+  //       switch (filter.comparison) {
+  //       case 'maior que':
+  //         return Number(planet[filter.column]) > Number(filter.value);
+  //       case 'menor que':
+  //         return Number(planet[filter.column]) < Number(filter.value);
+  //       case 'igual a':
+  //         return Number(planet[filter.column]) === Number(filter.value);
+  //       default:
+  //         return true;
+  //       }
+  //     }), planetsFilter);
+  // }, [filterByNumericValues]);
 
   const handleFilter = (p, filter) => {
     let planets = [...p];
@@ -58,16 +77,39 @@ function PlanetsProvider({ children }) {
   const addFilter = (obj) => {
     setFilterByNumericValues([...filterByNumericValues, obj]);
     handleFilter(planetsInfo, [...filterByNumericValues, obj]);
-    console.log(obj);
+    // console.log(obj);
     const results = column.filter((item) => item !== obj.column);
     setColumn(results);
     // console.log(results);
   };
 
+  const removeFilter = (item) => {
+    const result = filterByNumericValues.filter((e) => e.column !== item);
+    setFilterByNumericValues(result);
+  };
+
   useEffect(() => {
-    setColumnFilter(column[0]);
-    console.log(column[0]);
+    const clone = [...column];
+    console.log(column);
+    setColumnFilter(clone[0]);
   }, [column]);
+
+  const order = (sortedColumn, orders) => {
+    const num = -1;
+    const result = planetsInfo.sort((a, b) => {
+      if (b[sortedColumn] === 'unknown') {
+        return num;
+      }
+      if (orders === 'ASC') {
+        return Number(a[sortedColumn]) - Number(b[sortedColumn]);
+      }
+      return Number(b[sortedColumn]) - Number(a[sortedColumn]);
+    });
+    setPlanetsInfo([...result]);
+    // console.log(columnSort, orders);
+    // console.log(newData);
+    // console.log(planetsInfo);
+  };
 
   return (
     <planetsContext.Provider
@@ -79,6 +121,9 @@ function PlanetsProvider({ children }) {
         filterByNumericValues,
         setFilterByNumericValues,
         columnFilter,
+        removeFilter,
+        order,
+        columnArray,
       } }
     >
       {children}
